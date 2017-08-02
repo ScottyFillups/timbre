@@ -4,16 +4,22 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node server.js",
     "build": "webpack",
-    "test": "webpack-dev-server --open"
+    "test": "nodemon server.js",
+    "server": "webpack-dev-server --open"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.15.3",
+    "jquery": "^3.2.1",
+    "shortid": "^2.2.8",
     "simple-peer": "^8.1.1",
-    "socket-io": "^1.0.0"
+    "socket-io": "^1.0.0",
+    "socket.io": "^2.0.3",
+    "socket.io-client": "^2.0.3"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^0.1.16",

@@ -10,6 +10,11 @@ module.exports = {
   },
   output: {
     filename: 'bundle.js',
-    path: path.join(__dirname, 'dist')
-  }
+    path: path.join(__dirname, 'dist/js')
+  },
+  // socket.io webpack bug
+  /*module: {
+    noParse: ['ws'],
+  },
+  externals: ['ws']*/
 };
