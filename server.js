@@ -25,25 +25,19 @@ io.on('connection', (socket) => {
     socket.emit('receive link', url);
   });
   socket.on('signal request', (initiatorId) => {
-    console.log(initiatorId);
     let initiator = initiators[initiatorId];
     if (initiator) {
-      console.log('request sent');
       initiator.emit('signal request', socket.id);
     } else {
       socket.emit('invalid id');
     }
   });
   socket.on('send signal', (data) => {
-    console.log('GOT A SIGNAL!!!');
     if (data.socketId) {
-      console.log(io.sockets.sockets);
       io.sockets.sockets[data.socketId].emit('get signal', data.signal);
     }
     else if (data.shortId) {
       initiators[data.shortId].emit('get signal', data.signal);
-    } else {
-      console.log('ERROR');
     }
   });
 });
