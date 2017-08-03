@@ -24,12 +24,14 @@ socket.on('invalid id', function() {
 });
 
 function startInitiator() {
-  peer = new SimplePeer({initiator: true});
+  peer = new SimplePeer({initiator: true, trickle: false});
   socket.on('signal request', function(id) {
+    console.log(id);
     peer.on('signal', function(data) {
+      console.log('signal ready');
       socket.emit('send signal', {
         signal: data,
-        target: id
+        socketId: id
       });
     });
     socket.on('get signal', function(data) {
@@ -42,12 +44,13 @@ function startInitiator() {
 function startRequester() {
   var initiatorId = (window.location.pathname).slice(3);
   socket.emit('signal request', initiatorId);
-  peer = new SimplePeer();
+  peer = new SimplePeer({initiator: false, trickle: false});
 
   peer.on('signal', function(data) {
+    console.log('signal ready');
     socket.emit('send signal', {
       signal: data,
-      target: initiatorId
+      shortId: initiatorId
     });
   });
   socket.on('get signal', function(data) {
@@ -70,8 +73,8 @@ function onPeerConnect() {
 function enableChat() {
   console.log('CHAT ENABLED');
   $('#chat-button').on('click', function() {
-    var msg = $('#chat-form').value;
-    $('#chat-form').value = '';
+    var msg = $('#chat-form').val();
+    $('#chat-form').val('');
     peer.send(msg);
     postMessage(msg);
   });
