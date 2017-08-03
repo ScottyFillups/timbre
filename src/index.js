@@ -24,9 +24,10 @@ socket.on('invalid id', function() {
 });
 
 function startInitiator() {
-  peer = new SimplePeer({initiator: true, trickle: false});
   socket.on('signal request', function(id) {
-    console.log(id);
+    console.log('signalling hooked');
+    peer = new SimplePeer({initiator: true, trickle: true});
+    peer.on('connect', onPeerConnect);
     peer.on('signal', function(data) {
       console.log('signal ready');
       socket.emit('send signal', {
@@ -39,13 +40,11 @@ function startInitiator() {
       peer.signal(data);
     });
   });
-  peer.on('connect', onPeerConnect);
 }
 function startRequester() {
   var initiatorId = (window.location.pathname).slice(3);
   socket.emit('signal request', initiatorId);
-  peer = new SimplePeer({initiator: false, trickle: false});
-
+  peer = new SimplePeer({initiator: false, trickle: true});
   peer.on('signal', function(data) {
     console.log('signal ready');
     socket.emit('send signal', {
@@ -53,11 +52,11 @@ function startRequester() {
       shortId: initiatorId
     });
   });
+  peer.on('connect', onPeerConnect);
   socket.on('get signal', function(data) {
     console.log('got signal');
     peer.signal(data);
   });
-  peer.on('connect', onPeerConnect);
 }
 
 

@@ -35,7 +35,7 @@ io.on('connection', (socket) => {
     }
   });
   socket.on('send signal', (data) => {
-    console.log(data.socketId);
+    console.log('GOT A SIGNAL!!!');
     if (data.socketId) {
       console.log(io.sockets.sockets);
       io.sockets.sockets[data.socketId].emit('get signal', data.signal);
