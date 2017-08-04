@@ -13,8 +13,12 @@ let ROOT_URL;
 const initiators = {};
 
 if (PRODUCTION) {
-  app.get('*', (req, res) => {
-    res.redirect('https://' + req.get('host') + req.url);
+  app.get('*', (req, res, next) => {
+    if (req.headers['x-forwarded-proto'] != 'https') {
+      res.redirect('https://' + req.get('host') + req.url);
+    } else {
+      next();
+    }
   });
 }
 app.get('/', (req, res) => {
