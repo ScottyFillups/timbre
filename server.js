@@ -27,7 +27,7 @@ app.get('/r/:initiatorId', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
-app.use(express.static('dist'));
+app.use(express.static(__dirname + '/dist', {redirect: false}));
 
 io.set('transports', ['websocket']);
 io.on('connection', (socket) => {
