@@ -6,10 +6,17 @@ const server = http.Server(app);
 const io = require('socket.io')(server);
 
 const WEBSERVER_PORT = process.env.PORT || 8080;
+const PRODUCTION = process.env.PORT;
+
 let ROOT_URL;
 
 const initiators = {};
 
+if (PRODUCTION) {
+  app.get('*', (req, res) => {
+    res.redirect('https://' + req.get('host') + req.url);
+  });
+}
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
   if (!ROOT_URL) {
@@ -26,7 +33,7 @@ io.set('transports', ['websocket']);
 io.on('connection', (socket) => {
   socket.on('request link', () => {
     let initiatorId = shortid.generate();
-    let url = 'http://' + ROOT_URL + '/r/' + initiatorId;
+    let url = 'https://' + ROOT_URL + '/r/' + initiatorId;
     initiators[initiatorId] = socket;
     socket.emit('receive link', url);
   });
