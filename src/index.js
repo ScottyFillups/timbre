@@ -5,6 +5,10 @@ import $ from 'jquery';
 var signalOn = false;
 var peer;
 var socket = io('/', {transports: ['websocket']});
+navigator.getUserMedia = navigator.getUserMedia || 
+                         navigator.webkitGetUserMedia ||
+                         navigator.msGetUserMedia ||
+                         navigator.mozGetUserMedia;
 
 (function init() {
   if (window.location.pathname !== '/') {
@@ -16,7 +20,14 @@ var socket = io('/', {transports: ['websocket']});
     }, function(stream) {
       startRequester(initiatorId, stream);
     }, function(err) {
-      console.log(err);
+      navigator.getUserMedia({
+        video: false,
+        audio: true
+      }, function(stream) {
+        startRequester(initiatorId, stream);
+      }, function(err) {
+        console.log(err);
+      });
     });
   }
 })();
@@ -32,7 +43,14 @@ $('#room-button').on('click', function() {
       }, function(stream) {
         startInitiator(data, stream);
       }, function(err) {
-        console.log(err);
+        navigator.getUserMedia({
+          video: false,
+          audio: true
+        }, function(stream) {
+          startRequester(initiatorId, stream);
+        }, function(err) {
+          console.log(err);
+        });
       });
     });
   });
