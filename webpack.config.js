@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('path')
 
 module.exports = {
   entry: {
@@ -11,10 +11,10 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: path.join(__dirname, 'dist/js')
-  },
+  }
   // socket.io webpack bug
-  /*module: {
+  /* module: {
     noParse: ['ws'],
   },
-  externals: ['ws']*/
-};
+  externals: ['ws'] */
+}
