@@ -1,0 +1,33 @@
+<!doctype html>
+<html ng-app="landingPage">
+  <head>
+    <title>Timbre</title>
+    <link rel="stylesheet" href="stylesheets/index.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <script src="js/lobby.bundle.js"></script>
+  </head>
+  <body ng-controller="UrlGeneratorCtrl">
+    <div class="page">
+      <main>
+        <h1 class="logo">Strife<sub>JS</sub></h1>
+        <h2 class="slogan">Chatting made simple</h2>
+        <h3 class="desc">
+          A chatroom app, built with: <br />
+          Socket.io, AngularJS, Redis, Express, and Node.js
+        </h3>
+        <button id="room-generator" 
+          class="g-recaptcha"
+          data-sitekey="6LfGXiwUAAAAAMdGjb9LA6VFTLgb_K6Rcq9K-IGI"
+          data-callback="login">
+          Generate room
+        </button>
+        <div class="quote-container">
+          <p id="quote"></p>
+          <p id="author"></p>
+        </div>
+        <h3 class="author">Created by ScottyFillups | Philip Scott</h3>
+      </main>
+    </div>
+  </body>
+</html>

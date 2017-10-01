@@ -1,63 +1,47 @@
-const http = require('http')
-const express = require('express')
-const shortid = require('shortid')
-const app = express()
-const server = http.Server(app)
-const io = require('socket.io')(server)
+let http = require('http')
+let request = require('request')
+let express = require('express')
+let shortid = require('shortid')
+let optional = require('optional')
+let bodyParser = require('body-parser')
+let recaptchaFactory = require('invisible-recaptcha')
+let mashapeKeys = optional('./config/mashapeKeys')
+let recaptchaKeys = optional('./config/recaptchaKeys')
 
 const WEBSERVER_PORT = process.env.PORT || 8080
-const PRODUCTION = process.env.PORT
+const QUOTE_KEY = process.env.QUOTE_KEY_PROD || mashapeKeys.PROD
+const RECAPTCHA_KEY = process.env.RECAPTCHA_KEY || recaptchaKeys.SECRET
 
-let ROOT_URL
+let app = express()
+let server = http.Server(app)
+let io = require('socket.io')(server)
+let appManager = new (require('./utility/AppManager'))(io)
+let quoteMaker = require('famous-quotes')()//(QUOTE_KEY)
 
-const initiators = {}
+let recaptchaRouter = recaptchaFactory(RECAPTCHA_KEY, recaptchaSuccess, recaptchaFail)
+let lobby = require('./routes/lobby')
+let room = require('./routes/room')(appManager)
 
-if (PRODUCTION) {
-  app.get('*', (req, res, next) => {
-    if (req.headers['x-forwarded-proto'] !== 'https') {
-      res.redirect('https://' + req.get('host') + req.url)
-    } else {
-      next()
-    }
-  })
+quoteMaker.getGenerator()
+
+app.use(express.static('public'))
+app.use(bodyParser.text())
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use('/randomquote', quoteMaker.getRouter())
+app.use('/recaptcha', recaptchaRouter)
+app.use('/', lobby)
+app.use('/', room)
+
+function recaptchaSuccess (req, res) {
+  let address = shortid.generate()
+  appManager.genRoom(address)
+  res.send(address)
 }
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html')
-  if (!ROOT_URL) {
-    ROOT_URL = req.get('host')
-  }
-})
-app.get('/r/:initiatorId', (req, res) => {
-  res.sendFile(__dirname + '/index.html')
-})
+function recaptchaFail (req, res) {
+  res.send('There\'s an error with the ReCaptcha, sorry :c')
+}
 
-app.use(express.static(__dirname + '/dist', {redirect: false}))
-
-io.set('transports', ['websocket'])
-io.on('connection', (socket) => {
-  socket.on('request link', () => {
-    let initiatorId = shortid.generate()
-    let url = 'https://' + ROOT_URL + '/r/' + initiatorId
-    initiators[initiatorId] = socket
-    socket.emit('receive link', url)
-  })
-  socket.on('signal request', (initiatorId) => {
-    let initiator = initiators[initiatorId]
-    if (initiator) {
-      initiator.emit('signal request', socket.id)
-    } else {
-      socket.emit('invalid id')
-    }
-  })
-  socket.on('send signal', (data) => {
-    if (data.socketId) {
-      io.sockets.sockets[data.socketId].emit('get signal', data.signal)
-    } else if (data.shortId) {
-      initiators[data.shortId].emit('get signal', data.signal)
-    }
-  })
-})
-
-server.listen(WEBSERVER_PORT, function () {
+server.listen(WEBSERVER_PORT, () => {
   console.log('listening on port ' + WEBSERVER_PORT)
 })

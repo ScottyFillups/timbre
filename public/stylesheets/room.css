@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300');
+html, body {
+  margin: 0;
+  padding: 0;
+}
+#messages {
+  display: flex;
+  flex-direction: column-reverse;
+  height: 85%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.msgContainer {
+  height: 100%;
+}
+.avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  font-size: 1.8em;
+  line-height: 60px;
+  text-align: center;
+  color: #fff;
+  background-color: orange;
+  float: left;
+  margin-right: 10px;
+  margin-top: 15px;
+  vertical-align: top;
+}
+form {
+  text-align: center;
+}
+input[type='submit'] {
+  color: #fff;
+  padding: 10px;
+  text-transform: uppercase;
+  background-image: none;
+  background-color: rgba(34,34,34,0.92);
+  border: 1px solid #fff;
+  margin-left: 10px;
+  vertical-align: top;
+}
+input[type='text'] {
+  border: none;
+  font-size: 1em;
+  font-family: 'Open-sans', 'Helvetica', 'Arial', sans-serif;
+  border-bottom: 1px dotted #fff;
+  color: #fff;
+  padding: 10px;
+  background-color: rgba(34,34,34,0.92);
+}
+input[type='text'].messageInput {
+  border: 1px solid #fff;
+  font-size: 0.8em;
+}
+input:focus, textarea:focus {
+  outline: 0;
+}
+.message {
+  width: auto;
+  overflow: hidden;
+}
+.post {
+  padding: 0 30px;
+  margin: 10px 0;
+}
+.messageDate {
+  opacity: 0.8;
+  margin-left: 10px;
+  font-size: 0.8em;
+}
+.message p {
+  margin-bottom: 0;
+}
+.messageContent {
+  margin-left: 8px;
+  margin-top: 6px;
+}
+.notification {
+  text-align: center;
+  position: relative;
+  margin: 10px 20px;
+}
+.notification:after, .notification:before {
+  position: absolute;
+  height: 1px;
+  top: 50%;
+  background-color: #fff;
+  width: 35%;
+  opacity: 0.7;
+  content: ''
+}
+@media screen and (min-width: 0px) {
+.notification:after, .notification:before {width: 0;}
+input[type='text'] {width: 100px}
+}
+@media screen and (min-width: 300px) {
+.notification:after, .notification:before {width: 20%;}
+}
+@media screen and (min-width: 400px) {
+.notification:after, .notification:before {width: 30%;}
+input[type='text'] {width: 200px}
+}
+@media screen and (min-width: 600px) {
+.notification:after, .notification:before {width: 36%;}
+input[type='text'] {width: 400px}
+}
+@media screen and (min-width: 900px) {
+.notification:after, .notification:before {width: 40%;}
+}
+
+
+.notification:after {left: 0}
+.notification:before {right: 0}
+.notification p {
+  margin: 8px 0;
+}
+.notificationMessage {
+  font-weight: bold;
+}
+.notificationDate {
+  font-size: 0.8em;
+  opacity: 0.8;
+}
+
+.messageUser {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+main {
+  padding: 30px 0 100px 0;
+}
+body {
+  font-family: 'Open-sans', 'Helvetica', 'Arial', sans-serif;
+  background-color: #222;
+  color: #fff;
+}
+.messageForm {
+  position: fixed;
+  bottom: 30px;
+  left: 0;
+  right: 0;
+}
