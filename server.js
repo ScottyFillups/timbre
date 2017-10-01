@@ -31,9 +31,13 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/randomquote', quoteMaker.getRouter())
 app.use('/recaptcha', recaptchaRouter)
+
+if (process.env.PORT) {
+  app.use('/', https)
+}
 app.use('/', lobby)
 app.use('/', room)
-app.use('/', https)
+
 
 function recaptchaSuccess (req, res) {
   let address = shortid.generate()
