@@ -21,6 +21,7 @@ let quoteMaker = require('famous-quotes')()//(QUOTE_KEY)
 let recaptchaRouter = recaptchaFactory(RECAPTCHA_KEY, recaptchaSuccess, recaptchaFail)
 let lobby = require('./routes/lobby')
 let room = require('./routes/room')(appManager)
+let https = require('./routes/https')
 
 quoteMaker.getGenerator()
 
@@ -32,6 +33,7 @@ app.use('/randomquote', quoteMaker.getRouter())
 app.use('/recaptcha', recaptchaRouter)
 app.use('/', lobby)
 app.use('/', room)
+app.use('/', https)
 
 function recaptchaSuccess (req, res) {
   let address = shortid.generate()
