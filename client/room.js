@@ -11,10 +11,17 @@ app.value('streamConstraints', {
   video: { audio: false, video: true }
 })
 app.factory('streamPromise', ['streamConstraints', function (streamConstraints) {
-  return getStreamPromise(streamConstraints.default)
-    .catch(function (err) {
-      return getStreamPromise(streamConstraints.video)
+  return getStreamPromise(streamConstraints.default).catch(function (err) {
+    console.log('Webcam or mic not functioning. Attempting audio only')
+    return getStreamPromise(streamConstraints.audio).catch(function (err) {
+      console.log('Mic not functioning. Attempting video only')
+      return getStreamPromise(streamConstraints.video).catch(function (err) {
+        var msg = 'Microphone and webcam not functioning. Please turn one of them on'
+        console.log(msg)
+        alert(msg)
+      })
     })
+  })
 }])
 app.controller('RoomCtrl', ['$scope', 'streamPromise', 'roomId', '$filter', function ($scope, streamPromise, roomId, $filter) {
   var selfPeer
