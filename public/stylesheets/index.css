@@ -43,7 +43,7 @@ html, body {
   background-image: url('../assets/bg.png');
   background-repeat: repeat;
   background-position: center;
-  opacity: 0.4;
+  opacity: 0.5;
   display: block;
   position: absolute;
   top: 0;
@@ -79,9 +79,10 @@ main {
   margin-bottom: 30px;
 }
 body {
-  background: linear-gradient(45deg, #000, #333);
+  background: linear-gradient(45deg, #ff8300, #ff00a5);
+  background: linear-gradient(45deg, rgba(255, 131, 0, 0.7), rgba(255, 0, 165, 0.7));
   background-size: 400% 400%;
-  color: #fff;
+  color: #222;
   text-align: center;`
   
   -webkit-animation: AnimationName 29s ease infinite;
@@ -100,11 +101,11 @@ body {
 
 button {
   background-image: none;
-  border: 1px solid #fff;
+  border: 1px solid #222;
   padding: 25px;
   text-transform: uppercase;
   cursor: pointer;
-  color: #fff;
+  color: #222;
   font-size: 0.8em;
   background-color: transparent;
   transition: text-shadow 0.3s ease, box-shadow 0.3s ease;
