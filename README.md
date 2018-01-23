@@ -1,2 +1,3 @@
-# strife
-Simple chatting app made with node. Check it out here: https://strifejs.herokuapp.com/
+# timbre
+
+A weird combination of Skype and Discord. The web app generates an invite URL which starts an audio/video call with the person you sent it to. Check it out [here](https://timbrejs.herokuapp.com/)
